@@ -46,18 +46,19 @@ const NavBar = ()=>{
 
      const fetchUsers = (query)=>{
         setSearch(query)
-        fetch("/search-users",{
-          method:"post",
-          headers:{
-            "Content-Type":"application/json"
+        fetch("https://instagram-clone-w6k8.onrender.com/search-users", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
           },
-          body:JSON.stringify({
-            query
-          })
-        }).then(res=>res.json())
-        .then(results=>{
-          setUserDetails(results.user)
+          body: JSON.stringify({
+            query,
+          }),
         })
+          .then((res) => res.json())
+          .then((results) => {
+            setUserDetails(results.user);
+          });
      }
     return(
         <nav>

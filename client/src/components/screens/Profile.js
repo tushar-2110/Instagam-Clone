@@ -7,15 +7,16 @@ const Profile  = ()=>{
     const {state,dispatch} = useContext(UserContext)
     const [image,setImage] = useState("")
     useEffect(()=>{
-       fetch("/mypost",{
-           headers:{
-               "Authorization":"Bearer "+localStorage.getItem("jwt")
-           }
-       }).then(res=>res.json())
-       .then(result=>{
-           console.log(result)
-           setPics(result.mypost)
+       fetch("https://instagram-clone-w6k8.onrender.com/mypost", {
+         headers: {
+           Authorization: "Bearer " + localStorage.getItem("jwt"),
+         },
        })
+         .then((res) => res.json())
+         .then((result) => {
+           console.log(result);
+           setPics(result.mypost);
+         });
     },[])
     useEffect(()=>{
        if(image){
@@ -31,22 +32,26 @@ const Profile  = ()=>{
         .then(data=>{
     
        
-           fetch("/updatepic",{
-               method:"put",
-               headers:{
-                   "Content-Type":"application/json",
-                   "Authorization":"Bearer "+localStorage.getItem("jwt")
-               },
-               body:JSON.stringify({
-                   pic:data.url
-               })
-           }).then(res=>res.json())
-           .then(result=>{
-               console.log(result)
-               localStorage.setItem("user",JSON.stringify({...state,pic:result.pic}))
-               dispatch({type:"UPDATEPIC",payload:result.pic})
-               //window.location.reload()
+           fetch("https://instagram-clone-w6k8.onrender.com/updatepic", {
+             method: "put",
+             headers: {
+               "Content-Type": "application/json",
+               Authorization: "Bearer " + localStorage.getItem("jwt"),
+             },
+             body: JSON.stringify({
+               pic: data.url,
+             }),
            })
+             .then((res) => res.json())
+             .then((result) => {
+               console.log(result);
+               localStorage.setItem(
+                 "user",
+                 JSON.stringify({ ...state, pic: result.pic })
+               );
+               dispatch({ type: "UPDATEPIC", payload: result.pic });
+               //window.location.reload()
+             });
        
         })
         .catch(err=>{

@@ -7,109 +7,120 @@ const Home  = ()=>{
     const [data,setData] = useState([])
     const {state,dispatch} = useContext(UserContext)
     useEffect(()=>{
-       fetch("/getsubpost",{
-           headers:{
-               "Authorization":"Bearer "+localStorage.getItem("jwt")
-           }
-       }).then(res=>res.json())
-       .then(result=>{
-           console.log(result)
-           setData(result.posts)
+       fetch("https://instagram-clone-w6k8.onrender.com/getsubpost", {
+         headers: {
+           Authorization: "Bearer " + localStorage.getItem("jwt"),
+         },
        })
+         .then((res) => res.json())
+         .then((result) => {
+           console.log(result);
+           setData(result.posts);
+         });
     },[])
 
     const likePost = (id)=>{
-          fetch("/like",{
-              method:"put",
-              headers:{
-                  "Content-Type":"application/json",
-                  "Authorization":"Bearer "+localStorage.getItem("jwt")
-              },
-              body:JSON.stringify({
-                  postId:id
-              })
-          }).then(res=>res.json())
-          .then(result=>{
-                   //   console.log(result)
-            const newData = data.map(item=>{
-                if(item._id==result._id){
-                    return result
-                }else{
-                    return item
-                }
-            })
-            setData(newData)
-          }).catch(err=>{
-              console.log(err)
+          fetch("https://instagram-clone-w6k8.onrender.com/like", {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+            body: JSON.stringify({
+              postId: id,
+            }),
           })
+            .then((res) => res.json())
+            .then((result) => {
+              //   console.log(result)
+              const newData = data.map((item) => {
+                if (item._id == result._id) {
+                  return result;
+                } else {
+                  return item;
+                }
+              });
+              setData(newData);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
     }
     const unlikePost = (id)=>{
-          fetch("/unlike",{
-              method:"put",
-              headers:{
-                  "Content-Type":"application/json",
-                  "Authorization":"Bearer "+localStorage.getItem("jwt")
-              },
-              body:JSON.stringify({
-                  postId:id
-              })
-          }).then(res=>res.json())
-          .then(result=>{
-            //   console.log(result)
-            const newData = data.map(item=>{
-                if(item._id==result._id){
-                    return result
-                }else{
-                    return item
+          fetch("https://instagram-clone-w6k8.onrender.com/unlike", {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+            body: JSON.stringify({
+              postId: id,
+            }),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              //   console.log(result)
+              const newData = data.map((item) => {
+                if (item._id == result._id) {
+                  return result;
+                } else {
+                  return item;
                 }
+              });
+              setData(newData);
             })
-            setData(newData)
-          }).catch(err=>{
-            console.log(err)
-        })
+            .catch((err) => {
+              console.log(err);
+            });
     }
 
     const makeComment = (text,postId)=>{
-          fetch("/comment",{
-              method:"put",
-              headers:{
-                  "Content-Type":"application/json",
-                  "Authorization":"Bearer "+localStorage.getItem("jwt")
-              },
-              body:JSON.stringify({
-                  postId,
-                  text
-              })
-          }).then(res=>res.json())
-          .then(result=>{
-              console.log(result)
-              const newData = data.map(item=>{
-                if(item._id==result._id){
-                    return result
-                }else{
-                    return item
-                }
-             })
-            setData(newData)
-          }).catch(err=>{
-              console.log(err)
+          fetch("https://instagram-clone-w6k8.onrender.com/comment", {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+            body: JSON.stringify({
+              postId,
+              text,
+            }),
           })
+            .then((res) => res.json())
+            .then((result) => {
+              console.log(result);
+              const newData = data.map((item) => {
+                if (item._id == result._id) {
+                  return result;
+                } else {
+                  return item;
+                }
+              });
+              setData(newData);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
     }
 
     const deletePost = (postid)=>{
-        fetch("/deletepost/${postid}",{
-            method:"delete",
-            headers:{
-                Authorization:"Bearer "+localStorage.getItem("jwt")
-            }
-        }).then(res=>res.json())
-        .then(result=>{
-            console.log(result)
-            const newData = data.filter(item=>{
-                return item._id !== result._id
-            })
-            setData(newData)
-        })
+        fetch(
+          `https://instagram-clone-w6k8.onrender.com/deletepost/${postid}`,
+          {
+            method: "delete",
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((result) => {
+            console.log(result);
+            const newData = data.filter((item) => {
+              return item._id !== result._id;
+            });
+            setData(newData);
+          });
     }
    return (
        <div className="home">

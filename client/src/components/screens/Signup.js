@@ -38,29 +38,33 @@ const SignIn  = ()=>{
             M.toast({html: "invalid email",classes:"#c62828 red darken-3"})
             return
         }
-        fetch("/signup",{
-            method:"post",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                name,
-                password,
-                email,
-                pic:url
-            })
-        }).then(res=>res.json())
-        .then(data=>{
-           if(data.error){
-              M.toast({html: data.error,classes:"#c62828 red darken-3"})
-           }
-           else{
-               M.toast({html:data.message,classes:"#43a047 green darken-1"})
-               history.push('/signin')
-           }
-        }).catch(err=>{
-            console.log(err)
+        fetch("https://instagram-clone-w6k8.onrender.com/signup", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            password,
+            email,
+            pic: url,
+          }),
         })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.error) {
+              M.toast({ html: data.error, classes: "#c62828 red darken-3" });
+            } else {
+              M.toast({
+                html: data.message,
+                classes: "#43a047 green darken-1",
+              });
+              history.push("/signin");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     }
     const PostData = ()=>{
         if(image){

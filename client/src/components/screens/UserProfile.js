@@ -10,75 +10,83 @@ const Profile  = ()=>{
     const {userid} = useParams()
     const [showfollow,setShowFollow] = useState(state?!state.following.includes(userid):true)
     useEffect(()=>{
-       fetch("/user/${userid}",{
-           headers:{
-               "Authorization":"Bearer "+localStorage.getItem("jwt")
-           }
-       }).then(res=>res.json())
-       .then(result=>{
-           //console.log(result)
-         
-            setProfile(result)
+       fetch(`https://instagram-clone-w6k8.onrender.com/user/${userid}`, {
+         headers: {
+           Authorization: "Bearer " + localStorage.getItem("jwt"),
+         },
        })
+         .then((res) => res.json())
+         .then((result) => {
+           //console.log(result)
+
+           setProfile(result);
+         });
     },[])
 
 
     const followUser = ()=>{
-        fetch("/follow",{
-            method:"put",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem('jwt')
-            },
-            body:JSON.stringify({
-                followId:userid
-            })
-        }).then(res=>res.json())
-        .then(data=>{
-        
-            dispatch({type:"UPDATE",payload:{following:data.following,followers:data.followers}})
-             localStorage.setItem("user",JSON.stringify(data))
-             setProfile((prevState)=>{
-                 return {
-                     ...prevState,
-                     user:{
-                         ...prevState.user,
-                         followers:[...prevState.user.followers,data._id]
-                        }
-                 }
-             })
-             setShowFollow(false)
+        fetch("https://instagram-clone-w6k8.onrender.com/follow", {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
+          },
+          body: JSON.stringify({
+            followId: userid,
+          }),
         })
+          .then((res) => res.json())
+          .then((data) => {
+            dispatch({
+              type: "UPDATE",
+              payload: { following: data.following, followers: data.followers },
+            });
+            localStorage.setItem("user", JSON.stringify(data));
+            setProfile((prevState) => {
+              return {
+                ...prevState,
+                user: {
+                  ...prevState.user,
+                  followers: [...prevState.user.followers, data._id],
+                },
+              };
+            });
+            setShowFollow(false);
+          });
     }
     const unfollowUser = ()=>{
-        fetch("/unfollow",{
-            method:"put",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem('jwt')
-            },
-            body:JSON.stringify({
-                unfollowId:userid
-            })
-        }).then(res=>res.json())
-        .then(data=>{
-            
-            dispatch({type:"UPDATE",payload:{following:data.following,followers:data.followers}})
-             localStorage.setItem("user",JSON.stringify(data))
-            
-             setProfile((prevState)=>{
-                const newFollower = prevState.user.followers.filter(item=>item != data._id )
-                 return {
-                     ...prevState,
-                     user:{
-                         ...prevState.user,
-                         followers:newFollower
-                        }
-                 }
-             })
-             setShowFollow(true)
-             
+        fetch("https://instagram-clone-w6k8.onrender.com/unfollow", {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("jwt"),
+          },
+          body: JSON.stringify({
+            unfollowId: userid,
+          }),
         })
+          .then((res) => res.json())
+          .then((data) => {
+            dispatch({
+              type: "UPDATE",
+              payload: { following: data.following, followers: data.followers },
+            });
+            localStorage.setItem("user", JSON.stringify(data));
+
+            setProfile((prevState) => {
+              const newFollower = prevState.user.followers.filter(
+                (item) => item != data._id
+              );
+              return {
+                ...prevState,
+                user: {
+                  ...prevState.user,
+                  followers: newFollower,
+                },
+              };
+            });
+            setShowFollow(true);
+          });
     }
    return (
        <>
