@@ -1,6 +1,9 @@
 import React,{useState,useEffect} from 'react'
 import M from 'materialize-css'
 import {useHistory} from 'react-router-dom'
+// import {base} from "../../api"
+
+
 const CretePost = ()=>{
     const history = useHistory()
     const [title,setTitle] = useState("")

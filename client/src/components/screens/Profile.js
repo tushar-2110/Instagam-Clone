@@ -1,12 +1,13 @@
 import React,{useEffect,useState,useContext} from 'react'
 import {UserContext} from '../../App'
+// import {base} from "../../api"
 
 const Profile  = ()=>{
     const [mypics,setPics] = useState([])
     const {state,dispatch} = useContext(UserContext)
     const [image,setImage] = useState("")
     useEffect(()=>{
-       fetch('/mypost',{
+       fetch("/mypost",{
            headers:{
                "Authorization":"Bearer "+localStorage.getItem("jwt")
            }
@@ -30,7 +31,7 @@ const Profile  = ()=>{
         .then(data=>{
     
        
-           fetch('/updatepic',{
+           fetch("/updatepic",{
                method:"put",
                headers:{
                    "Content-Type":"application/json",

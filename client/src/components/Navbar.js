@@ -2,6 +2,8 @@ import React,{useContext,useRef,useEffect,useState} from 'react'
 import {Link ,useHistory} from 'react-router-dom'
 import {UserContext} from '../App'
 import M from 'materialize-css'
+// import {base} from "../api"
+
 const NavBar = ()=>{
     const  searchModal = useRef(null)
     const [search,setSearch] = useState('')
@@ -44,7 +46,7 @@ const NavBar = ()=>{
 
      const fetchUsers = (query)=>{
         setSearch(query)
-        fetch('/search-users',{
+        fetch("/search-users",{
           method:"post",
           headers:{
             "Content-Type":"application/json"
